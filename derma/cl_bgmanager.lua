@@ -7,6 +7,8 @@ function PANEL:Init()
     self:SetDraggable(true)
     self:MakePopup()
 
+    self.AltAlgorithmBodygroupTable = {}
+
     self.Paint = function(_, w, h)
         draw.RoundedBox(15,0,0,w,h, ix.config.Get("colorFondoBGManager"))
     end
@@ -97,6 +99,10 @@ function PANEL:Fill(target)
         nombreBodygroup:SetTextColor(ix.config.Get("colorEnfasisBGManager"))
         nombreBodygroup:SetContentAlignment(7)
 
+
+        self.AltAlgorithmBodygroupTable[bgData.name] = bgData.id
+
+
         local bgBarra = self.contenedorBg:Add("DNumSlider")
         bgBarra:Dock(TOP)
         bgBarra:SetContentAlignment(7)
@@ -117,6 +123,8 @@ function PANEL:Fill(target)
         -- Realtime update of the bodygroups in the preview
         bgBarra.OnValueChanged = function(_, val)
             self.displayCharacter.Entity:SetBodygroup(bgData.id, val)
+            self.AltAlgorithmBodygroupTable[bgData.name] = bgData.id
+
         end
     end
 
@@ -165,7 +173,7 @@ function PANEL:Fill(target)
 
         net.Start("SBMSaveBodygroups")
             net.WritePlayer(target)
-            net.WriteTable(tblBodygroups)
+            net.WriteTable((ix.config.Get("SBM.AltAlgorithm", false) and self.AltAlgorithmBodygroupTable) or tblBodygroups)
             net.WriteUInt(self.displayCharacter.Entity:GetSkin(), 5)
             net.WriteVector(self.hairChanger:GetVector())
         net.SendToServer()

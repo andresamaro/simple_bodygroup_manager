@@ -20,3 +20,25 @@ function PLUGIN:PlayerSpawn(client)
         end
     end
 end
+
+function PLUGIN:CharacterLoaded(char)
+    if (!ix.config.Get("SBM.AltAlgorithm", false)) then return end
+    if (!char) then return end -- Nilcheck just in case
+
+    local altBodygroupTable = char:GetData("SBM.AltAlgorithm.Bodygroups", nil)
+    if (!altBodygroupTable) then return end
+
+    local target = char:GetPlayer()
+    if (!target) then return end
+
+    for key, value in pairs(tblBodygroups) do
+        local bgId = target:FindBodygroupByName(key)
+        if (bgId == -1) then continue end
+
+        target:SetBodygroup(bgId, value)
+        target:GetCharacter():SetData("SBM.AltAlgorithm.Bodygroups", tblBodygroups)
+    end
+
+
+
+end

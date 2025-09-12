@@ -11,12 +11,23 @@ net.Receive("SBMSaveBodygroups", function(_, ply)
 
     if (!target or !target:IsPlayer() or !target:GetCharacter()) then return end
 
-    for id, val in ipairs(tblBodygroups) do
-        target:SetBodygroup(id, val)
+    if (!ix.config.Get("SBM.AltAlgorithm", false)) then
+        for id, val in ipairs(tblBodygroups) do
+            target:SetBodygroup(id, val)
+        end
+        target:GetCharacter():SetData("groups", tblBodygroups)
+
+    else
+        for key, value in pairs(tblBodygroups) do
+            local bgId = target:FindBodygroupByName(key)
+            if (bgId == -1) then continue end
+
+            target:SetBodygroup(bgId, value)
+            target:GetCharacter():SetData("SBM.AltAlgorithm.Bodygroups", tblBodygroups)
+        end
     end
 
     target:SetSkin(skin)
-    target:GetCharacter():SetData("groups", tblBodygroups)
     target:SetPlayerColor(playerColor)
 
     target:GetCharacter():SetData("SBMPlayerColor", playerColor)

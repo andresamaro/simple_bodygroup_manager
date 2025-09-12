@@ -17,3 +17,7 @@ ix.config.Add("saveButtonColor", Color(33,107,27), "Color del botón de guardado
 ix.config.Get("saveHairColor", true, "Permite que el plugin gestione el guardado del color del pelo", nil, {
     category = "Simple Bodygroup Manager"
 })
+
+ix.config.Add("SBM.AltAlgorithm", false, "Use an alternative algorithm for bodygroup saving and loading", nil, {
+    category = "Simple Bodygroup Manager"
+})
