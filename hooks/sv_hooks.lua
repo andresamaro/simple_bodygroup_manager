@@ -31,7 +31,7 @@ function PLUGIN:CharacterLoaded(char)
     local target = char:GetPlayer()
     if (!target) then return end
 
-    for key, value in pairs(tblBodygroups) do
+    for key, value in pairs(altBodygroupTable) do
         local bgId = target:FindBodygroupByName(key)
         if (bgId == -1) then continue end
 
